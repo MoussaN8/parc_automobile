@@ -1,0 +1,35 @@
+
+services:
+  web:
+    image: odoo:19.0
+    container_name: odoo_parc_automobile_app
+    depends_on:  #on va d'abord démarrer la BD
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo #on demande à docker de créer et de gérer le volume(odoo-web-data)  
+      - ./config:/etc/odoo #j'utilise le bind mount
+      - ./custom_addons:/mnt/extra-addons #j'utilise le bind mount
+    environment:
+      - HOST=db
+      - USER=${DB_USER}
+      - PASSWORD=${PASSWORD}
+    command: --dev=xml --db-filter=^parc_automobile_db$ #--dev=xml : Active le mode de développement pour les fichiers XML. --db-filter=^parc_automobile_db$ : Force Odoo à se connecter uniquement à parc_automobile_db
+  
+
+  db:
+    image: postgres:16
+    container_name: parc_automobile_db
+    environment:
+      - POSTGRES_DB=parc_automobile_db
+      - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+  
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+
