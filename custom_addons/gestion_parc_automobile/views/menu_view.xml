@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Menu principal -->
+    <menuitem
+        id="menu_parc_automobile_root"
+        name="Parc automobile"
+        sequence="10"/>
+
+    <!-- Sous menu -->
+    <menuitem
+        id="liste_voiture_menu"
+        name="Voitures"
+        parent="menu_parc_automobile_root"
+        action="action_voiture_menu"
+        sequence="10"/>
+
+       <menuitem
+        id="mainteance_menu"
+        name="Maintenances"
+        parent="menu_parc_automobile_root"
+        action="action_maintenance_menu"
+        sequence="20"/> 
+
+</odoo>

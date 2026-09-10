@@ -17,7 +17,7 @@ class Maintenance (models.Model):
     date_service=fields.Date(string="Date de l'intervention",required=True)
     cout_maintenance=fields.Integer(string="Coût de l'intervention",required=True)
     garage_id=fields.Many2one('res.partner',string="Prestaire / Garage exécutant")
-    etat=fields.selection([
+    etat=fields.Selection([
         ("brouillon","Brouillon"),
         ("planifie","Planifie"),
         ("termine","Terminé"),

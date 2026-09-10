@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- listes des maintenances -->
+    <record id="view_voitures_maintenances" model="ir.ui.view">
+        <field name="name">voitures.maintenances.tree</field>
+        <field name="model">parc.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Liste des maintenances">
+                <field name="name"/>
+                <field name="voiture_id"/>
+                <field name="type_service"/>
+                <field name="date_service"/>
+                <field name="cout_maintenance"/>
+                <field name="garage_id"/>
+                <field name="etat"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- consulter une maintenance spécifique -->
+    <record id="view_parc_maintenance_form" model="ir.ui.view">
+        <field name="name">voiture.maintenance.form</field>
+        <field name="model">parc.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="maintenance">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="voiture_id"/>
+                        <field name="type_service"/>
+                        <field name="date_service"/>
+                        <field name="cout_maintenance"/>
+                        <field name="garage_id"/>
+                        <field name="etat"/>
+                       
+                    </group>
+
+                    <notebook>
+                        <page name="Description" string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+            </form>
+        </field>
+        
+    </record>
+
+    <!-- l'action window pour le menu -->
+    <record id="action_maintenance_menu" model="ir.actions.act_window">
+        <field name="name">Maintenances</field>
+        <field name="res_model">parc.maintenance</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+    
+
+</odoo>

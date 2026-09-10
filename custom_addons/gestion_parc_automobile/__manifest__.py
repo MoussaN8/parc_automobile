@@ -6,7 +6,12 @@
     'category': 'Human Resources/Fleet',
     'author': 'Moussa Ndiaye',
     'depends': ['base'],
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/voiture_views.xml',
+        'views/maintenance_views.xml',
+        'views/menu_view.xml'
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,

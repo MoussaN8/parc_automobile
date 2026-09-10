@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- listes des voitures -->
+    <record id="view_parc_voiture" model="ir.ui.view">
+        <field name="name">parc.voiture.tree</field>
+        <field name="model">parc.voiture</field>
+        <field name="arch" type="xml">
+
+            <list string="Liste des voitures">
+                <field name="name" />
+                <field name="plaque" />
+                <field name="marque" />
+                <field name="modele" />
+                <field name="chauffeur_id" />
+                <field name="kilometrage" />
+                <field name="statut" />
+                <field name="maintenance_ids" />
+                <field name="cout_total" />
+
+            </list>
+        </field>
+
+    </record>
+
+    <!-- consulter une voiture spécifique -->
+    <record id="view_parc_automobile_form" model="ir.ui.view">
+        <field name="name">parc.automobile.form</field>
+        <field name="model">parc.voiture</field>
+        <field name="arch" type="xml">
+            <form string="Voiture">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="plaque" />
+                        <field name="marque" />
+                        <field name="modele" />
+                        <field name="chauffeur_id" />
+                        <field name="kilometrage" />
+                        <field name="statut" />
+                        <field name="maintenance_ids" />
+                        <field name="cout_total" />
+                    </group>
+                </sheet>
+
+            </form>
+
+        </field>
+
+    </record>
+
+    <!-- rechercher une voiture -->
+    <record id="view_parc_automobile_search" model="ir.ui.view">
+        <field name="name">parc.automobile.search</field>
+        <field name="model">parc.voiture</field>
+        <field name="arch" type="xml">
+            <!-- champs sur lesquels le user pourrai faire des recherches  -->
+            <search> 
+                <field name="name" />
+                <field name="plaque" />
+                <field name="marque" />
+                <field name="chauffeur_id" />
+            </search>
+        </field>
+
+    </record>
+
+    <!-- l'action window pour le menu -->
+    <record id="action_voiture_menu" model="ir.actions.act_window">
+        <field name="name">Voitures</field>
+        <field name="res_model">parc.voiture</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+
+</odoo>
