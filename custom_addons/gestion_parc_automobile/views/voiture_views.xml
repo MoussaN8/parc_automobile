@@ -15,7 +15,6 @@
                 <field name="chauffeur_id" />
                 <field name="kilometrage" />
                 <field name="statut" />
-                <field name="maintenance_ids" />
                 <field name="cout_total" />
 
             </list>
@@ -30,6 +29,26 @@
         <field name="arch" type="xml">
             <form string="Voiture">
                 <sheet>
+                    <!-- bouton affichant le nombre de maintenances enregistrées.-->
+                    <!-- 
+                oe_button_box: Indique Odoo d'aligner automatiquement tous les boutons enfants horizontalement, de
+                    leur donner une forme carrée grise et 
+                de les placer tout en haut à droite de la feuille (<sheet>).
+                Le nom (name="button_box"). Il permet à d'autres modules (via l'héritage XML) d'ajouter facilement
+                    de nouveaux boutons à cet endroit 
+                précis en ciblant cette boîte. 
+                class="oe_stat_button" : Applique le style standard d'Odoo pour les boutons de statistiques (format
+                    carré, positionné en haut à droite).
+                icon="fa-wrench" : Affiche une icône de clé à molette (issue de FontAwesome) sur le bouton
+                .widget="statinfo" : Formate le texte pour afficher le chiffre du champ maintenance_count juste
+                    au-dessus du mot "Maintenances". -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_afficher_stats" type="object" class="oe_stat_button"
+                            icon="fa-wrench">
+                            <!-- Le champ qui affiche le nombre (ex: 5) -->
+                            <field name="maintenance_count" widget="statinfo" string="Maintenances" />
+                        </button>
+                    </div>
                     <group>
                         <field name="name" />
                         <field name="plaque" />
@@ -38,7 +57,6 @@
                         <field name="chauffeur_id" />
                         <field name="kilometrage" />
                         <field name="statut" />
-                        <field name="maintenance_ids" />
                         <field name="cout_total" />
                     </group>
                 </sheet>
@@ -55,7 +73,7 @@
         <field name="model">parc.voiture</field>
         <field name="arch" type="xml">
             <!-- champs sur lesquels le user pourrai faire des recherches  -->
-            <search> 
+            <search>
                 <field name="name" />
                 <field name="plaque" />
                 <field name="marque" />
