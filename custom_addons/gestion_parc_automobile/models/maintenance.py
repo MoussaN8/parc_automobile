@@ -25,3 +25,26 @@ class Maintenance (models.Model):
     ],string="Statut maintenance",default="brouillon",required=True)
 
     description=fields.Text(string="Détails des travaux effectués")
+
+    # Mettre l'etat en brouillon
+    def action_brouillon(self):
+        for record in self:
+            record.etat="brouillon"
+
+
+     # Mettre l'etat en planifie
+    def action_planifier(self):
+        for record in self:
+            record.etat="planifie"     
+
+
+    # Mettre l'etat en terminé
+    def action_marquer_terminer(self):
+        for record in self:
+            record.etat="termine"
+
+
+    # Mettre l'etat en annulé
+    def action_annuler(self):
+        for record in self:
+            record.etat="annule"

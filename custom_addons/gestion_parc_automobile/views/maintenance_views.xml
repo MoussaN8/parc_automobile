@@ -25,6 +25,25 @@
         <field name="model">parc.maintenance</field>
         <field name="arch" type="xml">
             <form string="maintenance">
+                <!-- Mise en place du status bar-->
+                 <header>
+                   
+                     <!-- Le bouton Planifier est visible que si on est en brouillon -->
+                     <button name="action_planifier" string="Planifier" type="object" class="oe_highlight" invisible="etat != 'brouillon'" />
+
+                     <!-- Le bouton action_marquer_terminer est visible que  si on est en planifie -->
+                     <button name="action_marquer_terminer" string="Marquer comme terminé" type="object" class="oe_highlight" invisible="etat != 'planifie'" />
+
+                     <!-- Le bouton action_annuler est visible que  si on est en brouillon ou en planifie -->
+                     <button name="action_annuler" string="Annuler" type="object" class="oe_highlight" invisible=" etat in ('brouillon','planifie')" />
+
+                     <!--Remettre en brouillon si par erreur on a annulé la maintenance-->
+                    <button name="action_brouillon" string="Remettre en brouillon" type="object" class="oe_highlight" invisible="etat != 'annule'" />
+
+
+                      <!-- Le status bar lié au champ 'etat' avec les bonnes clés techniques -->
+                      <field name="etat" widget="statusbar" statusbar_visible="brouillon,planifie,termine,annule"></field>
+                 </header>
                 <sheet>
                     <group>
                         <field name="name"/>
