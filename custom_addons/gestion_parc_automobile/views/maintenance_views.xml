@@ -35,7 +35,7 @@
                      <button name="action_marquer_terminer" string="Marquer comme terminé" type="object" class="oe_highlight" invisible="etat != 'planifie'" />
 
                      <!-- Le bouton action_annuler est visible que  si on est en brouillon ou en planifie -->
-                     <button name="action_annuler" string="Annuler" type="object" class="oe_highlight" invisible=" etat in ('brouillon','planifie')" />
+                     <button name="action_annuler" string="Annuler" type="object" class="oe_highlight" invisible=" etat in ('termine','annule')" />
 
                      <!--Remettre en brouillon si par erreur on a annulé la maintenance-->
                     <button name="action_brouillon" string="Remettre en brouillon" type="object" class="oe_highlight" invisible="etat != 'annule'" />
@@ -68,11 +68,57 @@
         
     </record>
 
+    <!-- rechercher une maintenance -->
+    <record id="view_parc_automobile_maintenance" model="ir.ui.view">
+        <field name="name">parc.maintenance.search</field>
+        <field name="model">parc.maintenance</field>
+        <field name="arch" type="xml">
+            <!-- champs sur lesquels le user pourrai faire des recherches  -->
+            <search>
+                <field name="name" />
+                <field name="voiture_id" />
+                <field name="type_service" />
+                
+                <!--Filtrage-->
+                <filter name="groupby_planifie" string="Planifiées" domain="[('etat', '=', 'planifie')]"/>
+                
+                <filter name="cette_annee" string="Interventions cette année" domain="[('date_service', '&gt;=',context_today().strftime('%y-%m-01'))]" />
+
+                <separator/>
+
+                <!--Regrouper les maintenances par Type de service ou par Garage.-->
+                <group>
+                    <filter name="group_type_service" string="Par type service" context="{'group_by': 'type_service'}" />
+
+                    <filter name="group_garage" string="Par garage" context="{'group_by': 'garage_id'}" />
+                    <filter name="group_etat" string="Par état" context="{'group_by': 'etat'}" />
+                    
+                </group>
+            </search>
+        </field>
+
+    </record>
+
+
     <!-- l'action window pour le menu -->
     <record id="action_maintenance_menu" model="ir.actions.act_window">
         <field name="name">Maintenances</field>
         <field name="res_model">parc.maintenance</field>
         <field name="view_mode">list,form</field>
+
+        <!-- Ajout du contexte pour forcer proprement le regroupement par défaut à l'initialisation -->
+         <!-- 
+            Le contexte permet de pré-cocher des filtres à l'ouverture de la page.
+            'search_default_groupby_status': 1 active automatiquement le regroupement par statut 
+            dès le chargement, ce qui force le Kanban à dessiner ses colonnes immédiatement.
+        -->
+        <field name="context">{'search_default_groupby_planifie': 1}</field>
+
+        <!-- 
+            Cette ligne associe explicitement cette action à votre vue de recherche personnalisée.
+            Cela garantit qu'Odoo utilise les bons filtres (comme groupby_status) et évite les plantages RPC.
+        -->
+        <field name="search_view_id" ref="view_parc_automobile_maintenance"/>
 
     </record>
     
