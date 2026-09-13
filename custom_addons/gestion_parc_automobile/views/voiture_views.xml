@@ -67,6 +67,59 @@
 
     </record>
 
+     <!-- Vue kanban -->
+      <record id="view_voitue_kanban" model="ir.ui.view">
+        <field name="name">voiture_kanban_view</field>
+        <field name="model">parc.voiture</field>
+
+        <!--La structrure du kanban-->
+        <field name="arch" type="xml">
+
+            <!--Le conteneur principal-->
+            <kanban default_group_by="statut" class="o_res_partner_kanban">
+                <!--On déclare les champs qui seront chargés (affichés) par odoo-->
+                <field name="name"/>
+                <field name="plaque"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="chauffeur_id"/>
+                <field name="statut"/>
+
+                <!--contient le modéle d'affichage-->
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click d-flex flex-column justify-content-between p-2 ">
+                            <div>
+                                <div class="o_kanban_record_title fw-bold fs-5">
+                                    <field name="name"/>
+                                </div>
+
+                                <div class="text-muted">
+                                    <field name="marque"/> <field name="modele"/> • <field name="plaque"/>
+                                </div>
+
+                                <div class="mt-2" t-if="record.chauffeur_id.raw_value">
+                                    <i class="fa fa-user me-1" title="Chauffeur"/>
+                                    <field name="chauffeur_id"/>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <field name="statut" widget="badge" 
+                                    decoration-success="statut == 'disponible'" 
+                                    decoration-info="statut == 'en_service'" 
+                                    decoration-danger="statut == 'maintenance'" 
+                                    decoration-warning="statut == 'rebut'"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+
+      </record>
+
     <!-- rechercher une voiture -->
     <record id="view_parc_automobile_search" model="ir.ui.view">
         <field name="name">parc.automobile.search</field>
@@ -87,7 +140,7 @@
     <record id="action_voiture_menu" model="ir.actions.act_window">
         <field name="name">Voitures</field>
         <field name="res_model">parc.voiture</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
 
     </record>
 
