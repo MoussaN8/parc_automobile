@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields,api
 
 class Maintenance (models.Model):
     _name="parc.maintenance"
@@ -30,21 +30,55 @@ class Maintenance (models.Model):
     def action_brouillon(self):
         for record in self:
             record.etat="brouillon"
+            record._update_voiture_statut()
 
 
      # Mettre l'etat en planifie
     def action_planifier(self):
         for record in self:
-            record.etat="planifie"     
+            record.etat="planifie"
+            record._update_voiture_statut()     
 
 
     # Mettre l'etat en terminé
     def action_marquer_terminer(self):
         for record in self:
             record.etat="termine"
+            record._update_voiture_statut()
 
 
     # Mettre l'etat en annulé
     def action_annuler(self):
         for record in self:
             record.etat="annule"
+            record._update_voiture_statut()
+
+    # --- Méthode Helper de synchronisation ---
+    def _update_voiture_statut(self):
+        for record in self:
+            if not record.voiture_id:
+                continue
+
+            if record.etat == 'planifie':
+                record.voiture_id.statut = 'maintenance'
+            
+            elif record.etat in ('termine','annule','brouillon'):
+                record.voiture_id.statut = 'disponible'
+
+    # automatiser le statut de la voiture(disponible ou pas ) en fonction de l'état de la maintenance
+    # pour faire cela je surcharge les méthode create et write
+
+    # pour dire à odoo que le user peut créer plusieurs enregistrement d'un coup
+    @api.model_create_multi
+    def create(self,vals_list):
+        records=super().create(vals_list)
+        records._update_voiture_statut()
+        return records
+
+    
+    def write(self,vals):
+        res=super().write(vals)
+        if 'etat' in vals or 'voiture_id' in vals:
+            self._update_voiture_statut()
+        
+        return res
