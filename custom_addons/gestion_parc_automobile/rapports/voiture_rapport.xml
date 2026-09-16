@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_rapport_voiture" model="ir.actions.report">
+
+        <field name="name">Fiche du véhicule</field>
+
+        <field name="model">parc.voiture</field>
+
+        <field name="report_type">qweb-pdf</field>
+
+        <field name="report_name" eval="'gestion_parc_automobile.rapport_voiture'"/>
+
+        <field name="report_file" eval="'gestion_parc_automobile.rapport_voiture'"/>
+
+        <field name="binding_model_id" ref="model_parc_voiture"/>
+
+        <field name="binding_type">report</field>
+
+    </record>
+
+</odoo>

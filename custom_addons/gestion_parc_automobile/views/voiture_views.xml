@@ -93,7 +93,7 @@
                 <templates>
                     <t t-name="card">
                         <div
-                            class="oe_kanban_global_click d-flex flex-column justify-content-between p-2 ">
+                            class="oe_kanban_global_click d-flex flex-column justify-content-between p-2 mb-3 shadow-sm rounded border ">
                             <div>
                                 <div class="o_kanban_record_title fw-bold fs-5">
                                     <field name="name" />

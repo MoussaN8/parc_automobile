@@ -11,6 +11,7 @@ services:
       - odoo-web-data:/var/lib/odoo #on demande à docker de créer et de gérer le volume(odoo-web-data)  
       - ./config:/etc/odoo #j'utilise le bind mount
       - ./custom_addons:/mnt/extra-addons #j'utilise le bind mount
+      - ./oca_addons:/mnt/oca_addons #je lis le dossier oca_addons de mon répertoire dans le container
     environment:
       - HOST=db
       - USER=${DB_USER}

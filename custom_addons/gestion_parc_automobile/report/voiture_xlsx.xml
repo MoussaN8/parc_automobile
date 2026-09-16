@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_rapport_voiture_xlsx" model="ir.actions.report">
+        <field name="name">Fiche du véhicule Excel</field>
+        <field name="model">parc.voiture</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">gestion_parc_automobile.rapport_voiture_xlsx</field>
+        <field name="report_file">gestion_parc_automobile.rapport_voiture_xlsx</field>
+
+        <field name="binding_model_id" ref="model_parc_voiture"></field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
