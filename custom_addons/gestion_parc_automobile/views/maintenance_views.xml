@@ -52,7 +52,7 @@
                         <field name="date_service"/>
                         <field name="cout_maintenance"/>
                         <field name="garage_id"/>
-                        <field name="etat"/>
+                     
                        
                     </group>
 
@@ -82,7 +82,7 @@
                 <!--Filtrage-->
                 <filter name="groupby_planifie" string="Planifiées" domain="[('etat', '=', 'planifie')]"/>
                 
-                <filter name="cette_annee" string="Interventions cette année" domain="[('date_service', '&gt;=',context_today().strftime('%y-%m-01'))]" />
+                <filter name="cette_annee" string="Interventions cette année" domain="[('date_service', '&gt;=',context_today().strftime('%Y-01-01'))]" />
 
                 <separator/>
 
@@ -99,12 +99,26 @@
 
     </record>
 
+    <!-- graphique pour visualiser le coût total des maintenances par véhicule-->
+     <record id="view_maintenance_graph" model="ir.ui.view">
+        <field name="name">parc.maintenance.graph</field>
+        <field name="model">parc.maintenance</field>
+        <field name="arch" type="xml">
+            <graph string="Coût des maintenances par véhicule" type="bar" sample="1">
+                <field name="voiture_id" type="row"/>
+                <field name="cout_maintenance" type="measure" />
+            </graph>
+
+        </field>
+
+     </record>
+
 
     <!-- l'action window pour le menu -->
     <record id="action_maintenance_menu" model="ir.actions.act_window">
         <field name="name">Maintenances</field>
         <field name="res_model">parc.maintenance</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,graph</field>
 
         <!-- Ajout du contexte pour forcer proprement le regroupement par défaut à l'initialisation -->
          <!-- 
