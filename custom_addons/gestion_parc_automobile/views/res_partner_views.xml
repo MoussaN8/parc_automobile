@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FORMULAIRE CHAUFFEUR -->
+
+    <record id="view_partner_form_chauffeur" model="ir.ui.view">
+
+        <field name="name">res.partner.form.chauffeur</field>
+
+        <field name="model">hr.employee</field>
+
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+
+        <field name="arch" type="xml">
+
+            <!-- Case Chauffeur -->
+            <xpath expr="//field[@name='name']" position="after">
+
+                <field name="is_chauffeur"/>
+
+            </xpath>
+
+            <!-- Informations chauffeur -->
+            <xpath expr="//sheet/notebook" position="inside">
+
+                <page
+                    string="Informations chauffeur"
+                    invisible="not is_chauffeur">
+
+                </page>
+
+            </xpath>
+
+        </field>
+
+    </record>
+
+
+    <!-- ACTION LISTE DES CHAUFFEURS -->
+
+    <record id="action_chauffeur_menu" model="ir.actions.act_window">
+
+        <field name="name">Chauffeurs</field>
+
+        <field name="res_model">hr.employee</field>
+
+        <field name="view_mode">list,form</field>
+
+        <field name="domain">
+            [('is_chauffeur', '=', True)]
+        </field>
+
+        <field name="context">
+            {'default_is_chauffeur': True}
+        </field>
+
+    </record>
+
+</odoo>

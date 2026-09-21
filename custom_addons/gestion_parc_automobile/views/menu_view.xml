@@ -5,7 +5,7 @@
     <menuitem
         id="menu_parc_automobile_root"
         name="Parc automobile"
-        sequence="10"/>
+        sequence="10" />
 
     <!-- Sous menu -->
     <menuitem
@@ -13,13 +13,37 @@
         name="Voitures"
         parent="menu_parc_automobile_root"
         action="action_voiture_menu"
-        sequence="10"/>
+        sequence="10" />
 
-       <menuitem
-        id="mainteance_menu"
+    <menuitem
+        id="maintenance_menu"
         name="Maintenances"
         parent="menu_parc_automobile_root"
         action="action_maintenance_menu"
-        sequence="20"/> 
+        sequence="20" />
+
+
+    <menuitem
+        id="chauffeur_menu"
+        name="Chauffeurs"
+        parent="menu_parc_automobile_root"
+        sequence="30"
+    />
+
+    <menuitem
+        id="chauffeur_list_menu"
+        name="Liste des chauffeurs"
+        parent="chauffeur_menu"
+        action="action_chauffeur_menu"
+        sequence="10"
+    />
+
+    <menuitem
+        id="chauffeur_report_menu"
+        name="Rapport Chauffeurs"
+        parent="chauffeur_menu"
+        action="action_chauffeur_report_wizard"
+        sequence="20"
+    />
 
 </odoo>
