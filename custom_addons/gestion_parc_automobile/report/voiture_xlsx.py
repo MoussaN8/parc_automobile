@@ -6,7 +6,7 @@ from odoo import models
 class RapportVoitureXlsx(models.AbstractModel):
     _name = "report.gestion_parc_automobile.rapport_voiture_xlsx"
     _inherit="report.report_xlsx.abstract"
-
+    _description = 'Rapport Excel des véhicules'
     #la fonction principale appelée par Odoo au moment où l'utilisateur clique sur le bouton d'impression.
     # workbook : Représente le fichier Excel global en cours de création.
     # data : Un dictionnaire contenant les paramètres ou filtres envoyés depuis un éventuel assistant (wizard)
