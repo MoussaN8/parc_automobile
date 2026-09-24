@@ -1,5 +1,5 @@
 from odoo import models, fields,api
-
+from odoo.exceptions import ValidationError
 class Maintenance (models.Model):
     _name="parc.maintenance"
     _description="Module qui permet de voir l'historique des réparations"
@@ -82,3 +82,10 @@ class Maintenance (models.Model):
             self._update_voiture_statut()
         
         return res
+
+
+    @api.constrains('cout_maintenance')
+    def _check_cout_maintenance(self):
+        for record in self:
+            if record.cout_maintenance < 0:
+                raise ValidationError("Le coût d'une maintenance ne peut pas être négatif !")
