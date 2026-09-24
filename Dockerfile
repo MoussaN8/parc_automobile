@@ -3,8 +3,9 @@ FROM odoo:19.0
 USER root
 
 
-# Copie de ton module personnalisé dans le dossier d'addons d'Odoo
-COPY ./parc_automobile /mnt/extra-addons/parc_automobile
+
+# Copie tout le contenu du dossier custom_addons vers les extra-addons d'Odoo
+COPY ./custom_addons /mnt/extra-addons/
 
 
 RUN pip3 install --no-cache-dir xlsxwriter
