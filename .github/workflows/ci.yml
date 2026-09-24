@@ -39,9 +39,10 @@ jobs:
 
       - name: Exécution des tests unitaires dans le conteneur Docker
         run: |
-          docker run --net=host \
+
+            docker run --network container:postgres \
             -e HOST=127.0.0.1 \
-            -e USER=odoo \
+            -e USER=admin \
             -e PASSWORD=odoo \
             odoo-parc-app:latest \
             odoo -i parc_automobile --test-enable --stop-after-init --log-level=test
