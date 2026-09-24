@@ -10,8 +10,7 @@ class Voiture(models.Model):
     modele=fields.Char(string="Modèle",required=True)
     # definition de la relation many to one vers chauffeur
     chauffeur_id=fields.Many2one(
-        'hr.employee', 
-        domain="[('is_chauffeur', '=', True)]",
+        'hr.employee',
         string="Employé / chauffeur",
         ondelete="set null" # Si l'employé est supprimé, le champ devient vide
         )

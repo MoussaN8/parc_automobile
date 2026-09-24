@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- FORMULAIRE CHAUFFEUR -->
-
-    <record id="view_partner_form_chauffeur" model="ir.ui.view">
-
-        <field name="name">res.partner.form.chauffeur</field>
-
+    <!-- FORMULAIRE EMPLOYE / CHAUFFEUR -->
+    <record id="view_employee_form_chauffeur" model="ir.ui.view">
+        <field name="name">hr.employee.form.chauffeur</field>
         <field name="model">hr.employee</field>
-
         <field name="inherit_id" ref="hr.view_employee_form"/>
-
         <field name="arch" type="xml">
 
-            <!-- Case Chauffeur -->
-            <xpath expr="//field[@name='name']" position="after">
-
-                <field name="is_chauffeur"/>
-
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="est_cadre"/>
             </xpath>
 
-            <!-- Informations chauffeur -->
-            <xpath expr="//sheet/notebook" position="inside">
-
-                <page
-                    string="Informations chauffeur"
-                    invisible="not is_chauffeur">
-
+            <!-- Informations chauffeur dans les onglets -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Informations chauffeur">
+                    <group>
+                        <!-- Champs spécifiques aux chauffeurs -->
+                    </group>
                 </page>
-
             </xpath>
 
+        </field>
+    </record>
+
+
+    <!-- listes des voitures -->
+    <record id="view_chauffeur_liste" model="ir.ui.view">
+        <field name="name">parc.chauffeur.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+
+            <list string="Liste des voitures">
+                <field name="name" />
+                <field name="work_email" />
+                <field name="work_phone" />
+                <field name="wage" />
+                <field name="contract_type_id" />
+
+            </list>
         </field>
 
     </record>
 
-
     <!-- ACTION LISTE DES CHAUFFEURS -->
-
     <record id="action_chauffeur_menu" model="ir.actions.act_window">
-
         <field name="name">Chauffeurs</field>
-
         <field name="res_model">hr.employee</field>
-
         <field name="view_mode">list,form</field>
-
-        <field name="domain">
-            [('is_chauffeur', '=', True)]
-        </field>
-
-        <field name="context">
-            {'default_is_chauffeur': True}
-        </field>
-
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
     </record>
 
 </odoo>
