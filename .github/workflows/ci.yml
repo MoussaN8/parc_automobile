@@ -1,36 +1,71 @@
-name: Odoo CI/CD Pipeline
+name: Odoo CI/CD Docker Pipeline
 
 on:
   push:
-    branches: [ "main", "master", "dev" ]
+    branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
 
 jobs:
-  lint-and-syntax:
-    name: Code Linting & Syntax Check
+  # -------------------------------------------------------------
+  # STAGE 1 : CI (Build Docker + Tests Unitaires Odoo)
+  # -------------------------------------------------------------
+  build-and-test:
+    name: Build Docker & Run Odoo Tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: postgres
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout du code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Build de l'image Docker Odoo
+        run: |
+          docker build -t odoo-parc-app:latest .
 
-    - name: Install Linting Tools
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8
+      - name: Exécution des tests unitaires dans le conteneur Docker
+        run: |
+          docker run --net=host \
+            -e HOST=127.0.0.1 \
+            -e USER=odoo \
+            -e PASSWORD=odoo \
+            odoo-parc-app:latest \
+            odoo -i parc_automobile --test-enable --stop-after-init --log-level=test
 
-    - name: Check Python Syntax Errors
-      run: |
-        # Bloque le pipeline s'il y a des erreurs de syntaxe Python critique
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+  # -------------------------------------------------------------
+  # STAGE 2 : CD (Continuous Deployment - Déploiement)
+  # -------------------------------------------------------------
+  deploy:
+    name: Deploy to Production Server
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
-    - name: Code Style Check
-      run: |
-        # Vérifie les normes de code sans bloquer le pipeline
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    steps:
+      - name: Connexion SSH & Mise à jour du serveur de Production
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/odoo-deployment
+            git pull origin main
+            docker compose build
+            docker compose up -d
+            docker exec odoo_container odoo -u parc_automobile -d db_prod --stop-after-init
+            docker restart odoo_container
