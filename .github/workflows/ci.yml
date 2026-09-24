@@ -40,12 +40,13 @@ jobs:
       - name: Exécution des tests unitaires dans le conteneur Docker
         run: |
 
-            docker run --network container:postgres \
+            docker run --net=host \
             -e HOST=127.0.0.1 \
+            -e PORT=5433 \
             -e USER=admin \
             -e PASSWORD=odoo \
             odoo-parc-app:latest \
-            odoo -i parc_automobile --test-enable --stop-after-init --log-level=test
+            odoo -r odoo -w odoo --db_host=127.0.0.1 --db_port=5433 -i parc_automobile --test-enable --stop-after-init --log-level=test
 
   # -------------------------------------------------------------
   # STAGE 2 : CD (Continuous Deployment - Déploiement)
